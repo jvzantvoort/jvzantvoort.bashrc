@@ -1,0 +1,69 @@
+---
+- block:
+  - name: install the latest version of git
+    yum: name={{ item }} state=latest
+    with_items:
+      - git
+
+- block:
+  - name: clone bash config
+    git:
+      repo: "{{ bash_git_personal }}"
+      dest: "{{ ci_homedir }}/.bash"
+    become: yes
+    become_user: "{{ ci_username }}"
+
+
+- block:
+  - name: create user .ssh dir
+    file:
+      path: "{{ ci_homedir }}/.ssh"
+      state: directory
+      mode: 0700
+      owner: "{{ ci_username }}"
+      group: "{{ ci_groupname }}"
+
+  - name: touch an ssh config file
+    file:
+      path: "{{ ci_homedir }}/.ssh/config"
+      state: touch
+      mode: 0640
+      owner: "{{ ci_username }}"
+      group: "{{ ci_groupname }}"
+
+- block:
+  - name: stat bashrc
+    stat:
+      path: "{{ ci_homedir }}/.bashrc"
+    register: bash_st
+
+  - name: Move the bashrc file out of the way
+    command: mv "{{ ci_homedir }}/.bashrc" "{{ ci_homedir }}/.bashrc.org"
+    when: bash_st.stat.islnk is defined and bash_st.stat.islnk == False
+
+  - name: link the bashrc config to the git one
+    file:
+      src: "{{ ci_homedir }}/{{ bash_local_config }}"
+      dest: "{{ ci_homedir }}/.bashrc"
+      owner: "{{ ci_username }}"
+      group: "{{ ci_groupname }}"
+      state: link
+
+- block:
+  - name: create user bin dir
+    file:
+      path: "{{ ci_homedir }}/bin"
+      state: directory
+      mode: 0755
+      owner: "{{ ci_username }}"
+      group: "{{ ci_groupname }}"
+
+  - name: link commands
+    file:
+      src: "{{ ci_homedir }}/{{ item.src }}"
+      dest: "{{ ci_homedir }}/{{ item.dst }}"
+      owner: "{{ ci_username }}"
+      group: "{{ ci_groupname }}"
+      state: link
+    with_items: "{{ bash_linked_commands }}"
+
