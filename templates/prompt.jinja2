@@ -1,0 +1,76 @@
+{# ************************************************************************* -#}
+{# Create a colored prompt.                                                  -#}
+{#                                                                           -#}
+{# Variables:                                                                -#}
+{#           ci_preset: define a preset (default is 'default')               -#}
+{#                      limited: account access should be limited            -#}
+{#                      development: account used for development            -#}
+{#                      virtual: non specific virtual machine                -#}
+{# ci_promt_main_color: left hand color                                      -#}
+{#   ci_promt_os_color: os highlight color                                   -#}
+{#  ci_promt_dir_color: dir highlight color                                  -#}
+{#                                                                           -#}
+{# CONSTANTS                                                                 -#}
+{# ************************************************************************* -#}
+{% set esc_end         = '\[\033[0m\]'                                       -%}
+{% set esc_black       = '\[\033[0:30m\]'                                    -%}
+{% set esc_gray        = '\[\033[1:30m\]'                                    -%}
+{% set esc_black       = '\[\033[0;30m\]'                                    -%}
+{% set esc_dark_gray   = '\[\033[1;30m\]'                                    -%}
+{% set esc_blue        = '\[\033[0;34m\]'                                    -%}
+{% set esc_light_blue  = '\[\033[1;34m\]'                                    -%}
+{% set esc_green       = '\[\033[0;32m\]'                                    -%}
+{% set esc_light_green = '\[\033[1;32m\]'                                    -%}
+{% set esc_cyan        = '\[\033[0;36m\]'                                    -%}
+{% set esc_light_cyan  = '\[\033[1;36m\]'                                    -%}
+{% set esc_red         = '\[\033[0;31m\]'                                    -%}
+{% set esc_light_red   = '\[\033[1;31m\]'                                    -%}
+{% set esc_purple      = '\[\033[0;35m\]'                                    -%}
+{% set esc_light_purpl = '\[\033[1;35m\]'                                    -%}
+{% set esc_brown       = '\[\033[0;33m\]'                                    -%}
+{% set esc_yellow      = '\[\033[1;33m\]'                                    -%}
+{% set esc_light_gray  = '\[\033[0;37m\]'                                    -%}
+{% set esc_white       = '\[\033[1;37m\]'                                    -%}
+{#                                                                           -#}
+{# DEFAULTS                                                                  -#}
+{# ************************************************************************* -#}
+{% set end_color   = esc_end                                                 -%}
+{% set os_color    = esc_green                                               -%}
+{% set dir_color   = esc_yellow                                              -%}
+{#                                                                           -#}
+{# MAIN                                                                      -#}
+{# ************************************************************************* -#}
+{#                                                                           -#}
+{% if ci_preset is not defined                                               -%}
+{% set ci_preset  = 'default'                                                -%}
+{% endif                                                                     -%}
+{#                                                                           -#}
+{% if ci_preset == 'default'                                                 -%}
+{% set main_color  = esc_light_cyan                                          -%}
+{#                                                                           -#}
+{% elif ci_preset == 'limited'                                               -%}
+{% set main_color  = esc_red                                                 -%}
+{#                                                                           -#}
+{% elif ci_preset == 'development'                                           -%}
+{% set main_color  = esc_yellow                                              -%}
+{#                                                                           -#}
+{% elif ci_preset == 'virtual'                                               -%}
+{% set main_color  = esc_light_green                                         -%}
+{#                                                                           -#}
+{% endif                                                                     -%}
+{#                                                                           -#}
+{% if ci_promt_main_color is defined                                         -%}
+{% set main_color = ci_promt_main_color                                      -%}
+{% endif                                                                     -%}
+{#                                                                           -#}
+{% if ci_promt_os_color is defined                                           -%}
+{% set os_color = ci_promt_os_color                                          -%}
+{% endif                                                                     -%}
+{#                                                                           -#}
+{% if ci_promt_dir_color is defined                                          -%}
+{% set dir_color = ci_promt_dir_color                                        -%}
+{% endif                                                                     -%}
+{# ************************************************************************* -#}
+# {{ ci_preset }}
+PS1="{{ main_color }}\u@\h{{ end_color }}/{{ os_color }} {{ ansible_os_family }}{{ end_color }} \T [{{ dir_color }}\w{{ end_color }}]
+# "

@@ -67,3 +67,12 @@
       state: link
     with_items: "{{ bash_linked_commands }}"
 
+- block:
+  - name: update prompt file
+    template:
+      src: prompt.jinja2
+      dest: "{{ ci_homedir }}/.bash/prompt.d/{{ ansible_hostname }}.sh"
+      owner: "{{ ci_username }}"
+      group: "{{ ci_groupname }}"
+      mode: 0644
+
