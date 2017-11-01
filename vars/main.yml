@@ -5,6 +5,3 @@ bash_git_personal: "https://github.com/jvzantvoort/jvzantvoort-bash-config.git"
 
 bash_local_config: ".bash/bashrc.sh"
 
-bash_linked_commands:
-  - src: .bash/bin/resume
-    dst: bin/resume

@@ -58,15 +58,6 @@
       owner: "{{ bashrc_username }}"
       group: "{{ bashrc_groupname }}"
 
-  - name: link commands
-    file:
-      src: "{{ bashrc_homedir }}/{{ item.src }}"
-      dest: "{{ bashrc_homedir }}/{{ item.dst }}"
-      owner: "{{ bashrc_username }}"
-      group: "{{ bashrc_groupname }}"
-      state: link
-    with_items: "{{ bash_linked_commands }}"
-
 - block:
   - name: update prompt file
     template:
