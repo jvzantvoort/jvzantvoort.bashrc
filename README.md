@@ -11,9 +11,9 @@ Only core modules for now.
 Role Variables
 --------------
 
- * ci_username: username
- * ci_groupname: primary groupname of the user
- * ci_homedir: homedir of the user
+ * bashrc_username: username
+ * bashrc_groupname: primary groupname of the user
+ * bashrc_homedir: homedir of the user
 
 Dependencies
 ------------
@@ -25,9 +25,9 @@ Example Playbook
 
     - hosts: servers
       vars:
-        ci_username: jvzantvoort
-        ci_groupname: jvzantvoort
-        ci_homedir: "/home/{{ ci_username }}"
+        bashrc_username: jvzantvoort
+        bashrc_groupname: jvzantvoort
+        bashrc_homedir: "/home/{{ bashrc_username }}"
 
       roles:
         - jvzantvoort.bashrc

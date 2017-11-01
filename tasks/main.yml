@@ -9,61 +9,61 @@
   - name: clone bash config
     git:
       repo: "{{ bash_git_personal }}"
-      dest: "{{ ci_homedir }}/.bash"
+      dest: "{{ bashrc_homedir }}/.bash"
     become: yes
-    become_user: "{{ ci_username }}"
+    become_user: "{{ bashrc_username }}"
 
 
 - block:
   - name: create user .ssh dir
     file:
-      path: "{{ ci_homedir }}/.ssh"
+      path: "{{ bashrc_homedir }}/.ssh"
       state: directory
       mode: 0700
-      owner: "{{ ci_username }}"
-      group: "{{ ci_groupname }}"
+      owner: "{{ bashrc_username }}"
+      group: "{{ bashrc_groupname }}"
 
   - name: touch an ssh config file
     file:
-      path: "{{ ci_homedir }}/.ssh/config"
+      path: "{{ bashrc_homedir }}/.ssh/config"
       state: touch
       mode: 0640
-      owner: "{{ ci_username }}"
-      group: "{{ ci_groupname }}"
+      owner: "{{ bashrc_username }}"
+      group: "{{ bashrc_groupname }}"
 
 - block:
   - name: stat bashrc
     stat:
-      path: "{{ ci_homedir }}/.bashrc"
+      path: "{{ bashrc_homedir }}/.bashrc"
     register: bash_st
 
   - name: Move the bashrc file out of the way
-    command: mv "{{ ci_homedir }}/.bashrc" "{{ ci_homedir }}/.bashrc.org"
+    command: mv "{{ bashrc_homedir }}/.bashrc" "{{ bashrc_homedir }}/.bashrc.org"
     when: bash_st.stat.islnk is defined and bash_st.stat.islnk == False
 
   - name: link the bashrc config to the git one
     file:
-      src: "{{ ci_homedir }}/{{ bash_local_config }}"
-      dest: "{{ ci_homedir }}/.bashrc"
-      owner: "{{ ci_username }}"
-      group: "{{ ci_groupname }}"
+      src: "{{ bashrc_homedir }}/{{ bash_local_config }}"
+      dest: "{{ bashrc_homedir }}/.bashrc"
+      owner: "{{ bashrc_username }}"
+      group: "{{ bashrc_groupname }}"
       state: link
 
 - block:
   - name: create user bin dir
     file:
-      path: "{{ ci_homedir }}/bin"
+      path: "{{ bashrc_homedir }}/bin"
       state: directory
       mode: 0755
-      owner: "{{ ci_username }}"
-      group: "{{ ci_groupname }}"
+      owner: "{{ bashrc_username }}"
+      group: "{{ bashrc_groupname }}"
 
   - name: link commands
     file:
-      src: "{{ ci_homedir }}/{{ item.src }}"
-      dest: "{{ ci_homedir }}/{{ item.dst }}"
-      owner: "{{ ci_username }}"
-      group: "{{ ci_groupname }}"
+      src: "{{ bashrc_homedir }}/{{ item.src }}"
+      dest: "{{ bashrc_homedir }}/{{ item.dst }}"
+      owner: "{{ bashrc_username }}"
+      group: "{{ bashrc_groupname }}"
       state: link
     with_items: "{{ bash_linked_commands }}"
 
@@ -71,8 +71,8 @@
   - name: update prompt file
     template:
       src: prompt.jinja2
-      dest: "{{ ci_homedir }}/.bash/prompt.d/{{ ansible_hostname }}.sh"
-      owner: "{{ ci_username }}"
-      group: "{{ ci_groupname }}"
+      dest: "{{ bashrc_homedir }}/.bash/prompt.d/{{ ansible_hostname }}.sh"
+      owner: "{{ bashrc_username }}"
+      group: "{{ bashrc_groupname }}"
       mode: 0644
 

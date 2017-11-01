@@ -2,13 +2,13 @@
 {# Create a colored prompt.                                                  -#}
 {#                                                                           -#}
 {# Variables:                                                                -#}
-{#           ci_preset: define a preset (default is 'default')               -#}
+{#           bashrc_preset: define a preset (default is 'default')           -#}
 {#                      limited: account access should be limited            -#}
 {#                      development: account used for development            -#}
 {#                      virtual: non specific virtual machine                -#}
-{# ci_promt_main_color: left hand color                                      -#}
-{#   ci_promt_os_color: os highlight color                                   -#}
-{#  ci_promt_dir_color: dir highlight color                                  -#}
+{# bashrc_promt_main_color: left hand color                                  -#}
+{#   bashrc_promt_os_color: os highlight color                               -#}
+{#  bashrc_promt_dir_color: dir highlight color                              -#}
 {#                                                                           -#}
 {# CONSTANTS                                                                 -#}
 {# ************************************************************************* -#}
@@ -41,36 +41,36 @@
 {# MAIN                                                                      -#}
 {# ************************************************************************* -#}
 {#                                                                           -#}
-{% if ci_preset is not defined                                               -%}
-{% set ci_preset  = 'default'                                                -%}
+{% if bashrc_preset is not defined                                           -%}
+{% set bashrc_preset  = 'default'                                            -%}
 {% endif                                                                     -%}
 {#                                                                           -#}
-{% if ci_preset == 'default'                                                 -%}
+{% if bashrc_preset == 'default'                                             -%}
 {% set main_color  = esc_light_cyan                                          -%}
 {#                                                                           -#}
-{% elif ci_preset == 'limited'                                               -%}
+{% elif bashrc_preset == 'limited'                                           -%}
 {% set main_color  = esc_red                                                 -%}
 {#                                                                           -#}
-{% elif ci_preset == 'development'                                           -%}
+{% elif bashrc_preset == 'development'                                       -%}
 {% set main_color  = esc_yellow                                              -%}
 {#                                                                           -#}
-{% elif ci_preset == 'virtual'                                               -%}
+{% elif bashrc_preset == 'virtual'                                           -%}
 {% set main_color  = esc_light_green                                         -%}
 {#                                                                           -#}
 {% endif                                                                     -%}
 {#                                                                           -#}
-{% if ci_promt_main_color is defined                                         -%}
-{% set main_color = ci_promt_main_color                                      -%}
+{% if bashrc_promt_main_color is defined                                     -%}
+{% set main_color = bashrc_promt_main_color                                  -%}
 {% endif                                                                     -%}
 {#                                                                           -#}
-{% if ci_promt_os_color is defined                                           -%}
-{% set os_color = ci_promt_os_color                                          -%}
+{% if bashrc_promt_os_color is defined                                       -%}
+{% set os_color = bashrc_promt_os_color                                      -%}
 {% endif                                                                     -%}
 {#                                                                           -#}
-{% if ci_promt_dir_color is defined                                          -%}
-{% set dir_color = ci_promt_dir_color                                        -%}
+{% if bashrc_promt_dir_color is defined                                      -%}
+{% set dir_color = bashrc_promt_dir_color                                    -%}
 {% endif                                                                     -%}
 {# ************************************************************************* -#}
-# {{ ci_preset }}
+# {{ bashrc_preset }}
 PS1="{{ main_color }}\u@\h{{ end_color }}/{{ os_color }} {{ ansible_os_family }}{{ end_color }} \T [{{ dir_color }}\w{{ end_color }}]
 # "
