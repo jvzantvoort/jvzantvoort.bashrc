@@ -59,6 +59,14 @@
       group: "{{ bashrc_groupname }}"
 
 - block:
+  - name: make sure the prompt.d dir exists
+    file:
+      path: "{{ bashrc_homedir }}/bash/prompt.d"
+      state: directory
+      mode: 0755
+      owner: "{{ bashrc_username }}"
+      group: "{{ bashrc_groupname }}"
+
   - name: update prompt file
     template:
       src: prompt.jinja2
