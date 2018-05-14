@@ -18,7 +18,7 @@ Role Variables
 Dependencies
 ------------
 
-none
+None
 
 Example Playbook
 ----------------
